@@ -1,0 +1,32 @@
+userland xtaf tool in C
+
+Purpose:
+	Test if I can correctly parse the XTAF filesystem.
+	This should help in debugging the XTAF kmod.
+
+Usage:
+* uxtaf attach DEVICE
+  'mounts' DEVICE and get info.  Info includes:
+  - FS geometry (start/end of boot/fat/root/other clusters)
+  - boot info
+  - current directory ( / upon attach)
+* uxtaf info
+  - show boot/fat/free space/mediasize info
+* uxtaf ls
+  - show directory contents of current dir, use this format instead of ls(1) format:
+    flen (229 = del) attribute(6) startcluster(10) filesize(10) cd ct ad at ud ut filename
+* uxtaf cat filename
+  - cat file 'filename' to standard output
+* uxtaf cd startcluster
+  - cd + display new dir starting at startcluster
+* uxtaf dot
+  - show the dot table
+
+Note that when a directory is not yet read with the ls command, it is impossible
+to go to the parent of that directory.  E.g. :
+
+%./uxtaf attach image
+%./uxtaf cd Content
+  (ok)
+%./uxtaf cd ..
+  (wrong, destination of .. unknown until "./uxtaf ls" is done)
